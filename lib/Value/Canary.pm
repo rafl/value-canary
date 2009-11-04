@@ -49,6 +49,9 @@ its only argument. If no callback is given, a default callback will be used.
 The default callback will warn with a full stack trace of where the value is
 being destroyed, as well as the message C<"$value destroyed">.
 
+This function is exported by default. See L<Sub::Exporter> on how to customize
+how exactly exporting happens.
+
 =cut
 
 sub canary {
