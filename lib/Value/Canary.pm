@@ -39,7 +39,9 @@ for something useful.
 my $wiz = wizard data => sub { $_[1] },
                  free => sub { $_[1]->($_[0]) };
 
-=function canary ($variable, $callback?)
+=head1 FUNCTIONS
+
+=head2 canary ($variable, $callback?)
 
 Registers a C<$callback> to be called as soon as C<$variable> is being
 destroyed. The callback will be invoked with a reverence to the C<$variable> as
