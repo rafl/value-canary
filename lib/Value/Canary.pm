@@ -37,7 +37,7 @@ for something useful.
 =cut
 
 my $wiz = wizard data => sub { $_[1] },
-                 free => sub { $_[1]->($_[0]) };
+    (map { $_ => sub { $_[1]->($_[0]) } } qw/free clear/);
 
 =head1 FUNCTIONS
 
