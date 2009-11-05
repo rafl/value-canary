@@ -48,7 +48,7 @@ $wiz = wizard data => sub { $_[1] },
     (map {
         $_ => sub {
             $_[1]->{cb}($_[0]);
-            dispell $_[0], $wiz or die;
+            &dispell($_[0], $wiz) or die;
             ();
         }
     } qw/free clear/);
@@ -68,10 +68,10 @@ how exactly exporting happens.
 
 =cut
 
-sub canary {
+sub canary (\[$@%&*]$) {
     my $cb = $_[1];
     $cb ||= sub { cluck "${ $_[0] } destroyed" };
-    cast $_[0], $wiz, { cb => $cb, val => weaken \$_[0] };
+    &cast($_[0], $wiz, { cb => $cb, val => weaken $_[0] });
 }
 
 =head1 SEE ALSO

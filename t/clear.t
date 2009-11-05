@@ -7,7 +7,7 @@ use Value::Canary;
 {
     my $i = 0;
 
-    my @foo = (42);
+    my @foo = (42, 23);
     canary @foo, sub { $i++ };
 
     is $i, 0;
