@@ -13,6 +13,9 @@ use Value::Canary;
     is $i, 0;
     undef @foo;
     is $i, 1;
+    @foo = (23);
+    undef @foo;
+    is $i, 1;
 }
 
 done_testing;
