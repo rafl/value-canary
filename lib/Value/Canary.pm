@@ -2,7 +2,8 @@ package Value::Canary;
 # ABSTRACT: Callbacks for value destruction
 
 use Carp 'cluck';
-use Variable::Magic qw/wizard cast/;
+use Scalar::Util qw/refaddr weaken/;
+use Variable::Magic qw/wizard cast dispell/;
 use namespace::clean;
 
 use Sub::Exporter -setup => {
@@ -36,8 +37,21 @@ for something useful.
 
 =cut
 
-my $wiz = wizard data => sub { $_[1] },
-    (map { $_ => sub { $_[1]->($_[0]) } } qw/free clear/);
+my $wiz;
+$wiz = wizard data => sub { $_[1] },
+    set => sub {
+        &dispell($_[0], $wiz) or die; # FUCK YOU, prototypes!
+        $_[1]->{cb}->(\'???')
+            if refaddr $_[0] != refaddr $_[1]->{val};
+        ();
+    },
+    (map {
+        $_ => sub {
+            $_[1]->{cb}($_[0]);
+            dispell $_[0], $wiz or die;
+            ();
+        }
+    } qw/free clear/);
 
 =head1 FUNCTIONS
 
@@ -57,7 +71,7 @@ how exactly exporting happens.
 sub canary {
     my $cb = $_[1];
     $cb ||= sub { cluck "${ $_[0] } destroyed" };
-    cast $_[0], $wiz, $cb;
+    cast $_[0], $wiz, { cb => $cb, val => weaken \$_[0] };
 }
 
 =head1 SEE ALSO
