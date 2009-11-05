@@ -24,7 +24,7 @@ use Value::Canary;
     canary $foo, sub { $i++ };
 
     is $i, 0;
-    $foo = 23;
+    $foo = 42;
     is $i, 1;
     undef $foo;
     is $i, 1;
